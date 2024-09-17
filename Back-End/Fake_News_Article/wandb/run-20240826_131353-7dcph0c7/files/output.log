@@ -1,0 +1,29 @@
+Some weights of the model checkpoint at bert-base-uncased were not used when initializing BertModel: ['cls.predictions.decoder.weight', 'cls.predictions.transform.dense.weight', 'cls.predictions.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias', 'cls.predictions.transform.dense.bias']
+- This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Epoch:  1
+0/1057812.25 loss: 1.0181820392608643
+Epoch:  1
+1/1057812.25 loss: 0.8680487871170044
+Epoch:  1
+2/1057812.25 loss: 0.8174418012301127
+Epoch:  1
+3/1057812.25 loss: 0.8419677764177322
+Epoch:  1
+4/1057812.25 loss: 0.7873193979263305
+Epoch:  1
+5/1057812.25 loss: 0.7704263726870219
+Epoch:  1
+6/1057812.25 loss: 0.7424109663282122
+Epoch:  1
+7/1057812.25 loss: 0.7368871867656708
+Epoch:  1
+8/1057812.25 loss: 0.7173167732026842
+Epoch:  1
+9/1057812.25 loss: 0.7281437754631043
+Epoch:  1
+10/1057812.25 loss: 0.7163421782580289
+Epoch:  1
+11/1057812.25 loss: 0.6991073489189148
+Epoch:  1
+12/1057812.25 loss: 0.6928677421349746

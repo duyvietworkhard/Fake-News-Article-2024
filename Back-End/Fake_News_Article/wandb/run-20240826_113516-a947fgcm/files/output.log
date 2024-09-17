@@ -1,0 +1,17 @@
+Some weights of the model checkpoint at bert-base-uncased were not used when initializing BertModel: ['cls.predictions.transform.dense.bias', 'cls.seq_relationship.weight', 'cls.predictions.transform.LayerNorm.bias', 'cls.predictions.bias', 'cls.seq_relationship.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.dense.weight', 'cls.predictions.decoder.weight']
+- This IS expected if you are initializing BertModel from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing BertModel from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Traceback (most recent call last):
+  File "D:\Workspace\DO AN TOT NGHIEP\Fake-News-Detection-master\Fake_News_Article\train.py", line 128, in <module>
+    probas = bert_clf(token_ids, masks)
+  File "C:\Users\Admin\anaconda3\lib\site-packages\torch\nn\modules\module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "D:\Workspace\DO AN TOT NGHIEP\Fake-News-Detection-master\Fake_News_Article\train.py", line 100, in forward
+    dropout_output = self.dropout(pooled_output)
+  File "C:\Users\Admin\anaconda3\lib\site-packages\torch\nn\modules\module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\Admin\anaconda3\lib\site-packages\torch\nn\modules\dropout.py", line 59, in forward
+    return F.dropout(input, self.p, self.training, self.inplace)
+  File "C:\Users\Admin\anaconda3\lib\site-packages\torch\nn\functional.py", line 1252, in dropout
+    return _VF.dropout_(input, p, training) if inplace else _VF.dropout(input, p, training)
+TypeError: dropout(): argument 'input' (position 1) must be Tensor, not str
