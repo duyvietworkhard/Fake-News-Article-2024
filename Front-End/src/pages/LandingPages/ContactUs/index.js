@@ -32,22 +32,30 @@ const ContactUs = (props) => {
   const [title, setTitle] = useState([]);
 
   useEffect(() => {
-    console.log(render);
     setTranslate(false);
     setOriginData([]);
     setFactData([]);
     setTranslateData([]);
   }, [render]);
+
+  useEffect(() => {
+    if (props.show) {
+      setVisible(true);
+      console.log(props.data);
+      setOriginData(props?.data);
+      setFactData(props?.data?.fact_check?.[2]?.slice(1));
+    }
+  }, [props.show]);
+
   // Thay đổi handleCheck thành async function
   const handleCheck = async () => {
     setRender(!render);
     try {
       await props.check(inputValue); // Đợi hàm check hoàn tất
-      await setVisible(props.show); // Sau khi hoàn tất, mới setVisible
-      await setOriginData(props?.data);
-      await setFactData(props?.data?.fact_check?.[2]?.slice(1));
-      await console.log(originData);
-      console.log(translateData);
+      console.log("Data from API: ", props.data);
+      // setVisible(props.show); // Sau khi hoàn tất, mới setVisible
+      // setOriginData(props?.data);
+      // setFactData(props?.data?.fact_check?.[2]?.slice(1));
     } catch (error) {
       console.error("Error during check:", error);
     }

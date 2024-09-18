@@ -21,46 +21,46 @@
   + Mở terminal và nhập dòng lệnh `npm start` để khởi động chương trình
 ### Clone
 
-- Clone this repo to your local machine using `https://github.com/abhilashreddys/Fake-News-Article.git`
+- Để clone dự án này về máy của bạn, hãy dùng `https://github.com/duyvietworkhard/Fake-News-Article-2024.git`
 
 ### Setup
 
-- Install these libraries/packages.
+- Cài đặt các thư viện/gói cần thiết.
 
 ```shell
-$ pip3 install pandas numpy scikit-learn bs4
-$ pip3 install torch
-$ pip3 install keras
-$ pip3 install pytorch_pretrained_bert
-$ pip3 install transformers
+ pip install pandas numpy scikit-learn bs4
+ pip install torch
+ pip install keras
+ pip install pytorch_pretrained_bert
+ pip install transformers
 ```
 ## Dataset
 
-- Data is collected by scraping the websites of popular news publishing sources.
-- The collected news articles are judged using the score, quality, bias as metric collected from [Politilact](https://www.politifact.com/) and [Media Charts](https://www.adfontesmedia.com/interactive-media-bias-chart/?v=402f03a963ba).
-- Some basic preprocessing is also done on the text collected from scraping websites.
+- Dữ liệu được thu thập bằng cách "cào" các trang web của những nguồn xuất bản tin tức phổ biến..
+- Các bài báo thu thập được được đánh giá dựa trên các thang điểm, chất lượng và thiên kiến, theo các chỉ số thu thập từ [Politilact](https://www.politifact.com/) và [Media Charts](https://www.adfontesmedia.com/interactive-media-bias-chart/?v=402f03a963ba).
+- Một số bước tiền xử lý cơ bản cũng được thực hiện trên văn bản thu thập từ việc quét các trang web.
 
-### Preprocessing
-- Used [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) for scraping articles from the web, Beautiful Soup is a Python library designed for quick turnaround projects like screen-scraping
-- Also used some custom made functions for removing punctuation etc.
+### Tiền xử lý
+- Sử dụng [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/) để quét các bài báo từ web. Beautiful Soup là một thư viện Python được thiết kế cho các dự án nhanh như quét màn hình
+- Cũng sử dụng một số hàm tự tạo để loại bỏ dấu câu, v.v..
 ![](https://miro.medium.com/max/495/1*AaAIETIq7XNlLrFQW7BtZg.png)
 
-> scraping from websites listed in [politifact_data.csv](https://github.com/abhilashreddys/Fake-News-Article/blob/master/politifact_data.csv)
-```shell
-$ python3 scrape_politifact.py
+> Quét từ các trang web được liệt kê trong [politifact_data.csv](https://github.com/abhilashreddys/Fake-News-Article/blob/master/politifact_data.csv)
+```terminal
+python scrape_politifact.py
 ```
 
-> scraping from websites listed in [Interactive Media Bias Chart - Ad Fontes Media.csv](https://github.com/abhilashreddys/Fake-News-Article/blob/master/Interactive%20Media%20Bias%20Chart%20-%20Ad%20Fontes%20Media.csv)
-```shell
-$ python3 scrape_media.py
+> Quét từ các trang web được liệt kê trong [Interactive Media Bias Chart - Ad Fontes Media.csv](https://github.com/abhilashreddys/Fake-News-Article/blob/master/Interactive%20Media%20Bias%20Chart%20-%20Ad%20Fontes%20Media.csv)
+```terminal
+python scrape_media.py
 ```
-- Data after scraping and preprocessing [politifact_text.csv](https://github.com/abhilashreddys/Fake-News-Article/blob/master/politifact_text.csv) , [pre_media.csv](https://github.com/abhilashreddys/Fake-News-Article/blob/master/pre_media.csv)
+- Dữ liệu sau khi quét và tiền xử lý sẽ ra được 2 file [politifact_text.csv] và [pre_media.csv]
 
-## Model
-- Trained by fine tuning the BERT
-- Used [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805) with fine tuning
-- BERT, which stands for Bidirectional Encoder Representations from Transformers.
-- BERT is designed to pretrain deep bidirectional representations from unlabeled text by jointly conditioning on both left and right context in all layers. As a result, the pre-trained BERT model can be finetuned with just one additional output layer to create state-of-the-art models for a wide range of tasks, such as question answering andlanguage inference, without substantial taskspecific architecture modifications.
+## Mô hình
+- Được huấn luyện bằng cách tinh chỉnh mô hình BERT
+- Sử dụng [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/abs/1810.04805) với tinh chỉnh
+- BERT, viết tắt của Bidirectional Encoder Representations from Transformers.
+- BERT được thiết kế để huấn luyện trước các biểu diễn sâu hai chiều từ văn bản chưa gán nhãn bằng cách đồng thời điều kiện hóa ngữ cảnh từ cả hai hướng trái và phải ở tất cả các tầng. Kết quả là, mô hình BERT đã được huấn luyện trước có thể được tinh chỉnh với chỉ một lớp đầu ra bổ sung để tạo ra các mô hình tiên tiến nhất cho nhiều tác vụ, chẳng hạn như trả lời câu hỏi và suy luận ngôn ngữ, mà không cần phải thay đổi cấu trúc chuyên biệt cho từng tác vụ.
 ![](https://github.com/manideep2510/siamese-BERT-fake-news-detection-LIAR/blob/master/doc_images/bert.png?raw=true)
 
 ```python
@@ -80,27 +80,22 @@ class BertBinaryClassifier(nn.Module):
         return proba
 ```
 
-## Weights 
 
-- Download here : [Link](https://drive.google.com/drive/folders/108JY7_yROQQsJDFbusVPP1aUmkZ4xe16?usp=sharing)
 
-## Inference
+## Chạy kết quả
 
 - Run `inference.py` and mention url of the article you want to test in comand line
 
-```shell
-$ python3 inference.py url
-```
 
-## Cautions & Suggestions
+## Lưu ý và gợi ý
 
-- Check the file locations properly, change it if required.
-- If you face any problems with script files use notebooks [transfrom_spam.ipynb](https://github.com/abhilashreddys/Fake-News-Article/blob/master/transfrom_spam.ipynb) for training and [fake_article.ipynb](https://github.com/abhilashreddys/Fake-News-Article/blob/master/fake_article.ipynb) for inference.
-- Trained only for `5 Epochs`, trying to use a better model with more data.
+- Kiểm tra đúng vị trí các tệp, thay đổi nếu cần thiết.
+- File python3 (.ipynb) chỉ để dùng thử khi không chạy được file Python [transfrom_spam.ipynb] dùng để huấn luyện và [fake_article.ipynb] để chạy kết quả.
+- Chỉ được huấn luyện trong `5 Epochs`, hãy thử sử dụng một mô hình tốt hơn với nhiều dữ liệu hơn..
 
-## References
+## Tài liệu tham khảo
 
-- For data [Politilact](https://www.politifact.com/) and [Media Charts](https://www.adfontesmedia.com/interactive-media-bias-chart/?v=402f03a963ba)
+- Với dữ liệu [Politilact](https://www.politifact.com/) và [Media Charts](https://www.adfontesmedia.com/interactive-media-bias-chart/?v=402f03a963ba)
 - [Keras: The Python Deep Learning library](https://keras.io)
 - [A library of state-of-the-art pretrained models for Natural Language Processing](https://github.com/huggingface/pytorch-transformers)
 - [Pytorch Deep Learning framework](https://github.com/pytorch/pytorch)
@@ -127,7 +122,7 @@ Understanding](https://arxiv.org/abs/1810.04805)
 }
 ```
 
-## Other Implementaions
+## Tham khảo các đề tài tương tự.
 
 - [Triple Branch BERT Siamese Network for fake news classification on LIAR-PLUS dataset](https://github.com/manideep2510/siamese-BERT-fake-news-detection-LIAR)
 - [Fake News Detection by Learning Convolution Filters through Contextualized Attention](https://github.com/ekagra-ranjan/fake-news-detection-LIAR-pytorch)
