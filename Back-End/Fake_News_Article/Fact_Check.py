@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
+from langdetect import detect
 import spacy
+from underthesea import pos_tag
 
 
 def get_article_title(url):
@@ -25,23 +27,45 @@ def get_article_title(url):
         return None
 
 
-# Load English NLP model
-nlp = spacy.load("en_core_web_sm")
+def detect_language(text):
+    """
+    Phát hiện ngôn ngữ của tiêu đề.
+    """
+    try:
+        lang = detect(text)
+        return lang
+    except Exception as e:
+        print(f"Error detecting language: {e}")
+        return None
 
-def extract_keywords(title):
+
+# Load English NLP model
+nlp_en = spacy.load("en_core_web_sm")
+
+
+def extract_keywords(title, lang):
     """
-    Lấy những từ khoá từ tiêu đề bài viết.
+    Lấy những từ khoá từ tiêu đề bài viết, hỗ trợ cả tiếng Anh và tiếng Việt.
     """
-    doc = nlp(title)
-    keywords = [chunk.text for chunk in doc.noun_chunks if chunk.root.dep_ in {'nsubj', 'dobj'}]
+    if lang == 'en':
+        # Sử dụng spaCy để trích xuất từ khoá cho tiếng Anh
+        doc = nlp_en(title)
+        keywords = [chunk.text for chunk in doc.noun_chunks if chunk.root.dep_ in {'nsubj', 'dobj'}]
+    elif lang == 'vi':
+        # Sử dụng underthesea để trích xuất từ khoá cho tiếng Việt
+        keywords = [word for word, pos in pos_tag(title) if pos in ['N', 'Np']]
+    else:
+        print("Unsupported language")
+        return []
+
     return keywords
 
 
 def google_fact_check_api(query):
     """
-    Sử dụng Google để kiểm tra các luận chứng dựa trên các từ khoá trích được.
+    Sử dụng Google Fact Check API để kiểm tra các luận chứng dựa trên các từ khoá trích được.
     """
-    api_key = 'AIzaSyB-GkpCVQjPFiKLYaz0lY6qPqzasVdGcjE'  # Replace with your Google API key
+    api_key = 'AIzaSyB-GkpCVQjPFiKLYaz0lY6qPqzasVdGcjE'  # Thay bằng Google API key của bạn
     url = f"https://factchecktools.googleapis.com/v1alpha1/claims:search?query={query}&key={api_key}"
 
     response = requests.get(url)
@@ -64,15 +88,22 @@ def fact_check_article(url):
 
     results.append(["Article Title:", title])
 
-    # Step 2: Extract keywords from the title
-    keywords = extract_keywords(title)
+    # Step 2: Detect language of the title
+    lang = detect_language(title)
+    # if lang:
+    #     results.append(["Detected Language:", lang])
+    # else:
+    #     results.append(["Unable to detect language."])
+
+    # Step 3: Extract keywords from the title
+    keywords = extract_keywords(title, lang)
     if not keywords:
         results.append(["Unable to extract keywords from the title."])
         return results
 
     results.append(["Extracted Keywords:", keywords])
 
-    # Step 3: Use Google Fact Check API with extracted keywords
+    # Step 4: Use Google Fact Check API with extracted keywords
     fact_check_results = google_fact_check_api(" ".join(keywords))
     if not fact_check_results:
         results.append(["No fact-checking results found."])
@@ -92,9 +123,10 @@ def fact_check_article(url):
             for review in claim.get('claimReview', []):
                 publisher = review.get('publisher', {})
                 publisher_name = publisher.get('name', 'Unknown publisher')
-                title = review.get('title', 'No title')
-                url = review.get('url', 'No URL')
-                review_result = [f"{publisher_name} rating:", rating, f"Reviewed by {publisher_name}:", title, f"({url})"]
+                title_review = review.get('title', 'No title')
+                url_review = review.get('url', 'No URL')
+                review_result = [f"{publisher_name} rating:", rating, f"Reviewed by {publisher_name}:", title_review,
+                                 f"({url_review})"]
                 claim_result.extend(review_result)
 
             fact_check_array.append(claim_result)
@@ -106,8 +138,17 @@ def fact_check_article(url):
     return results
 
 
-
-
 if __name__ == "__main__":
-    article_url = "https://www.statesman.com/story/news/politics/politifact/2024/08/04/politifact-claim-that-trump-would-cut-social-security-lacks-basis/74647925007/"
-    fact_check_article(article_url)
+    # Ví dụ bài báo tiếng Việt
+    article_url_vi = "https://vnexpress.net/tam-dung-khai-thac-san-bay-dong-hoi-de-tranh-bao-4794436.html"
+    print("=== Fact Check Vietnamese Article ===")
+    result_vi = fact_check_article(article_url_vi)
+    for res in result_vi:
+        print(res)
+
+    print("\n=== Fact Check English Article ===")
+    # Ví dụ bài báo tiếng Anh
+    article_url_en = "https://www.statesman.com/story/news/politics/politifact/2024/08/04/politifact-claim-that-trump-would-cut-social-security-lacks-basis/74647925007/"
+    result_en = fact_check_article(article_url_en)
+    for res in result_en:
+        print(res)

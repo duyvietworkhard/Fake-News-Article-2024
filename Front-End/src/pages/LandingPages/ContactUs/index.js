@@ -42,8 +42,15 @@ const ContactUs = (props) => {
     if (props.show) {
       setVisible(true);
       console.log(props.data);
-      setOriginData(props?.data);
-      setFactData(props?.data?.fact_check?.[2]?.slice(1));
+
+      // Ensure fact_check is an array and has at least 3 elements before accessing it
+      if (Array.isArray(props?.data?.fact_check) && props.data.fact_check.length >= 3) {
+        setOriginData(props?.data);
+        setFactData(props?.data?.fact_check?.[2]?.slice(1) || []); // Fallback to an empty array if undefined
+      } else {
+        setOriginData([]);
+        setFactData([]);
+      }
     }
   }, [props.show]);
 
@@ -60,6 +67,7 @@ const ContactUs = (props) => {
       console.error("Error during check:", error);
     }
   };
+
   // const adjustUrl = (url) => {
   //   // Nếu URL chứa localhost, thay thế bằng một URL khác hoặc chỉ trả lại URL gốc
   //   if (url.startsWith("http://localhost")) {
@@ -270,9 +278,13 @@ const ContactUs = (props) => {
                 fontFamily: "Georgia, serif",
               }}
             >
-              {!translate
+              {factData.length === 0
+                ? translate
+                  ? "Không có kết quả"
+                  : "No result"
+                : !translate
                 ? `${originData?.answer} NEWS`
-                : originData?.answer == "Fake"
+                : originData?.answer === "Fake"
                 ? "TIN GIẢ"
                 : "TIN THẬT"}
             </div>
@@ -383,7 +395,7 @@ const ContactUs = (props) => {
                 style={{
                   display: "flex",
                   flexDirection: "row", // Hiển thị các mục theo hàng ngang
-                  justifyContent: "space-between", // Cách đều các mục trong hàng
+                  justifyContent: factData.length === 0 ? "center" : "space-between", // Cách đều các mục trong hàng
                   overflowY: "auto",
                   width: "100%",
                 }}
@@ -439,7 +451,7 @@ const ContactUs = (props) => {
               <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
                 {!translate ? originData?.fact_check?.[2]?.[0] : title[0]}
               </h2>
-              {translate && translateData?.length > 0 ? (
+              {translate && Array.isArray(translateData) && translateData.length > 0 ? (
                 translateData.map((fact, index) => (
                   <div
                     key={index}
@@ -477,7 +489,7 @@ const ContactUs = (props) => {
                     </a>
                   </div>
                 ))
-              ) : factData?.length > 0 ? (
+              ) : Array.isArray(factData) && factData.length > 0 ? (
                 factData.map((fact, index) => (
                   <div
                     key={index}
@@ -511,12 +523,13 @@ const ContactUs = (props) => {
                       rel="noopener noreferrer"
                       style={{ color: "#007bff", textDecoration: "underline" }}
                     >
-                      Đi tới liên kết
+                      {translate ? "Đi tới liên kết" : "Go to the link"}
                     </a>
                   </div>
                 ))
               ) : (
-                <div>Không có dữ liệu để hiển thị</div>
+                // <div>{!translate ? "No result" : "Không có kết quả"}</div>
+                <div></div>
               )}
             </div>
           </div>
