@@ -121,6 +121,10 @@ Understanding](https://arxiv.org/abs/1810.04805)
   year={2018}
 }
 ```
+## Trang web có thể bạn sẽ muốn ghé qua (Nếu muốn phát triển đề tài theo hướng tiếng Việt)
+
+- https://vietfactcheck.org/
+- https://tingia.gov.vn/
 
 ## Tham khảo các đề tài tương tự.
 
@@ -129,3 +133,12 @@ Understanding](https://arxiv.org/abs/1810.04805)
 - [Based on Click-Baits](https://github.com/addy369/Click-Bait-Model)
 - [Fake News Web](https://github.com/addy369/Fake_News_Web)
 - [Fake News Pipeline Project](https://github.com/walesdata/newsbot), Explained article [here](https://towardsdatascience.com/full-pipeline-project-python-ai-for-detecting-fake-news-with-nlp-bbb1eec4936d).
+
+# Một số đường dẫn bài báo test
+
+- https://www.statesman.com/story/news/politics/politifact/2024/08/04/politifact-claim-that-trump-would-cut-social-security-lacks-basis/74647925007/
+- https://www.aol.com/kamala-harris-repeats-dubious-claim-100434778.html
+- https://www.statesman.com/story/news/politics/politifact/2024/09/14/trump-repeats-baseless-claims-that-haitian-immigrants-are-eating-pets/75211191007/
+- https://www.statesman.com/story/news/factcheck/2024/09/20/haitian-immigrants-trump-fact-check/75304414007/
+- https://www.statesman.com/story/news/politics/politifact/2024/09/02/how-much-would-donald-trumps-proposed-tariffs-cost-typical-families/75043631007/
+- https://www.statesman.com/story/news/politics/elections/2024/09/20/voting-us-presidential-election-begins/75289031007/
